@@ -1,0 +1,31 @@
+# Secrets — never commit these
+.env
+.env.local
+
+# Node
+node_modules/
+
+# Python
+__pycache__/
+.venv/
+venv/
+*.pyc
+
+# Build output
+dist/
+build/
+.next/
+out/
+.output/
+.vercel/
+.nitro/
+dev-dist/
+
+# Logs
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
