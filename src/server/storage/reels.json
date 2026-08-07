@@ -1,0 +1,29 @@
+[
+  {
+    "tag": "Film",
+    "title": "Brand film — Meridian",
+    "description": "A 60-second launch film for a fintech rebrand: system, tone, cut.",
+    "url": "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+    "kind": "youtube",
+    "embedUrl": "https://www.youtube-nocookie.com/embed/jNQXAC9IVRw",
+    "poster": "https://picsum.photos/seed/reel-meridian/1280/720"
+  },
+  {
+    "tag": "Motion",
+    "title": "Kinetic identity exploration",
+    "description": "How a flexible wordmark behaves across time and space.",
+    "url": "https://www.youtube.com/watch?v=9bZkp7q19f0",
+    "kind": "youtube",
+    "embedUrl": "https://www.youtube-nocookie.com/embed/9bZkp7q19f0",
+    "poster": "https://picsum.photos/seed/reel-kinetic/1280/720"
+  },
+  {
+    "tag": "Web",
+    "title": "Atlas commerce — interaction reel",
+    "description": "Micro-interactions and page transitions from the Atlas storefront.",
+    "url": "https://www.youtube.com/watch?v=kJQP7kiw5Fk",
+    "kind": "youtube",
+    "embedUrl": "https://www.youtube-nocookie.com/embed/kJQP7kiw5Fk",
+    "poster": "https://picsum.photos/seed/reel-atlas/1280/720"
+  }
+]

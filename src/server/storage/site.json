@@ -1,0 +1,109 @@
+{
+  "hero": {
+    "eyebrow": "Independent studio",
+    "name": "Ojasav Thakur",
+    "headline": "We craft bold digital experiences",
+    "subheadline": "Branding, film and web for ambitious teams — strategy-led, motion-first, built to be remembered."
+  },
+  "about": {
+    "eyebrow": "About",
+    "title": "Who we are",
+    "body": "A small studio of designers, filmmakers and engineers who believe the best work feels inevitable. We partner closely with founders and teams to turn sharp ideas into experiences people remember — and want to tell their friends about.",
+    "tiles": [
+      {
+        "title": "Strategy",
+        "body": "Positioning, narratives and systems that give a brand a clear point of view."
+      },
+      {
+        "title": "Design",
+        "body": "Identity, art direction and interfaces with a crafted, human touch."
+      },
+      {
+        "title": "Motion",
+        "body": "Film, animation and interaction design that makes ideas move."
+      }
+    ]
+  },
+  "portfolio": {
+    "overview": {
+      "eyebrow": "Work",
+      "title": "Selected work",
+      "description": "A snapshot of recent collaborations across branding, web and film."
+    },
+    "sections": {
+      "branding": {
+        "title": "Branding",
+        "description": "Identity systems & art direction",
+        "items": [
+          {
+            "title": "Meridian Rebrand",
+            "category": "Branding",
+            "description": "A flexible identity system for a fintech scale-up.",
+            "image": "https://picsum.photos/seed/meridian/1200/900",
+            "url": ""
+          },
+          {
+            "title": "Hearth Packaging",
+            "category": "Branding",
+            "description": "Packaging and shelf presence for a DTC ceramics brand.",
+            "image": "https://picsum.photos/seed/hearth/1200/900",
+            "url": ""
+          }
+        ]
+      },
+      "web": {
+        "title": "Web",
+        "description": "Digital experiences",
+        "items": [
+          {
+            "title": "Atlas Commerce",
+            "category": "Web",
+            "description": "A headless storefront with a motion-first product story.",
+            "image": "https://picsum.photos/seed/atlas/1200/900",
+            "url": ""
+          },
+          {
+            "title": "Field Notes App",
+            "category": "Web",
+            "description": "A quiet, fast writing tool for teams.",
+            "image": "https://picsum.photos/seed/fieldnotes/1200/900",
+            "url": ""
+          }
+        ]
+      },
+      "film": {
+        "title": "Film",
+        "description": "Motion & reels",
+        "items": [
+          {
+            "title": "Launch Film — Aurora",
+            "category": "Film",
+            "description": "A 60-second brand film for a climate tech company.",
+            "image": "https://picsum.photos/seed/aurora/1200/900",
+            "url": ""
+          }
+        ]
+      }
+    }
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "headline": "Let's make something people remember",
+    "blurb": "Tell us where you're headed — we reply to every inquiry within two working days.",
+    "email": "hello@ojasavstudio.com",
+    "location": "Remote · Worldwide"
+  },
+  "footer": {
+    "copyright": "© 2026 Ojasav Thakur",
+    "socials": [
+      { "label": "Instagram", "url": "https://instagram.com" },
+      { "label": "Behance", "url": "https://behance.net" },
+      { "label": "LinkedIn", "url": "https://linkedin.com" },
+      { "label": "X", "url": "https://x.com" }
+    ]
+  },
+  "marquee": {
+    "top": ["Branding", "Film", "Web", "Motion", "Strategy"],
+    "bottom": ["Identity", "Art Direction", "Development", "Reels", "Systems"]
+  }
+}
