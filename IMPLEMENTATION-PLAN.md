@@ -39,7 +39,7 @@ bun install
 
 - [ ] **Step 2: Init git and copy shared templates**
 
-```bash
+```bash 
 git init
 cp ../../_templates/.gitignore .gitignore
 cp ../../_templates/.env.example .env

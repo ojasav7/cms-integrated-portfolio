@@ -51,7 +51,11 @@ export const getCollections = createServerFn({ method: 'GET' }).handler(
           const col = item.collection as CollectionName
           if (!COLLECTION_NAMES.includes(col)) return acc
           if (!acc[col]) acc[col] = []
-          acc[col].push(item.data as unknown as CollectionItem)
+          // Include the ContentBlock id so the admin editor can update/delete.
+          acc[col].push({
+            ...(item.data as unknown as Record<string, unknown>),
+            id: item.id,
+          } as unknown as CollectionItem)
           return acc
         },
         {} as CollectionsMap,
