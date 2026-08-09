@@ -1,10 +1,12 @@
 import { useState, type FormEvent } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowUpRight, Mail, MapPin } from 'lucide-react'
+import { ArrowUpRight, MapPin } from 'lucide-react'
 import type { SiteConfig } from '@/lib/cms/types'
 import { fadeUp, stagger, viewport } from '@/lib/motion'
 import { Button } from '@/components/ui/button'
 import { Input, Textarea } from '@/components/ui/input'
+import { ContactOrnament, DrawnMailIcon } from './contact-ornament'
+import { ScrambleText } from '@/components/ui/scramble-text'
 
 interface ContactSectionProps {
   site: SiteConfig
@@ -34,9 +36,9 @@ export function ContactSection({ site }: ContactSectionProps) {
           initial="hidden"
           whileInView="show"
           viewport={viewport}
-          className="overflow-hidden rounded-[2.5rem] bg-ink text-background"
+          className="relative overflow-hidden rounded-[2.5rem] bg-ink text-background"
         >
-          <div className="pointer-events-none absolute" aria-hidden="true" />
+          <ContactOrnament />
           <div className="grid gap-12 p-8 md:p-16 lg:grid-cols-2 lg:gap-20">
             <div>
               <motion.p
@@ -45,12 +47,9 @@ export function ContactSection({ site }: ContactSectionProps) {
               >
                 {site.contact.eyebrow}
               </motion.p>
-              <motion.h2
-                variants={fadeUp}
-                className="mt-4 font-display text-4xl font-medium tracking-tight text-balance md:text-5xl"
-              >
-                {site.contact.headline}
-              </motion.h2>
+              <h2 className="mt-4 font-display text-4xl font-medium tracking-tight text-balance md:text-5xl">
+                <ScrambleText text={site.contact.headline} />
+              </h2>
               <motion.p
                 variants={fadeUp}
                 className="mt-5 max-w-md text-base leading-relaxed text-background/60"
@@ -64,7 +63,7 @@ export function ContactSection({ site }: ContactSectionProps) {
                   className="group inline-flex items-center gap-3 text-lg font-medium"
                 >
                   <span className="grid h-11 w-11 place-items-center rounded-full border border-background/20 transition-colors group-hover:border-accent">
-                    <Mail className="h-4.5 w-4.5 text-accent" />
+                    <DrawnMailIcon className="h-4.5 w-4.5 text-accent" />
                   </span>
                   {site.contact.email}
                   <ArrowUpRight className="h-4 w-4 text-background/40 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />

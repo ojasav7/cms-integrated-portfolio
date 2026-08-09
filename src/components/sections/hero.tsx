@@ -1,15 +1,20 @@
-import { useRef, type MouseEvent } from 'react'
+import { useEffect, useRef, type MouseEvent } from 'react'
 import {
   motion,
+  useInView,
   useMotionValue,
+  useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
   type MotionValue,
 } from 'framer-motion'
+import { animate, stagger } from 'animejs'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import type { SiteConfig, StatItem } from '@/lib/cms/types'
 import { buttonVariants } from '@/components/ui/button'
+import { Magnetic } from '@/components/ui/magnetic'
+import { CountUp } from '@/components/ui/count-up'
 import { EASE } from '@/lib/motion'
 import { cn } from '@/lib/utils'
 
@@ -20,6 +25,10 @@ interface HeroSectionProps {
 
 export function HeroSection({ site, stats }: HeroSectionProps) {
   const ref = useRef<HTMLElement>(null)
+  const blobARef = useRef<HTMLDivElement>(null)
+  const blobBRef = useRef<HTMLDivElement>(null)
+  const sectionVisible = useInView(ref, { amount: 0.05 })
+  const reduceMotion = useReducedMotion() ?? false
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start start', 'end start'],
@@ -39,7 +48,34 @@ export function HeroSection({ site, stats }: HeroSectionProps) {
     mouseY.set((e.clientY - rect.top) / rect.height - 0.5)
   }
 
-  const words = site.hero.headline.split(' ')
+  // Ambient aurora: the blurred orbs drift with animejs sine motion.
+  // Runs only while the hero is on screen (and motion is allowed).
+  useEffect(() => {
+    const a = blobARef.current
+    const b = blobBRef.current
+    if (!a || !b || !sectionVisible || reduceMotion) return
+    const anims = [
+      animate(a, {
+        translateX: [0, 90],
+        translateY: [0, -70],
+        scale: [1, 1.25],
+        duration: 13000,
+        ease: 'inOutSine',
+        loop: true,
+        direction: 'alternate',
+      }),
+      animate(b, {
+        translateX: [0, -100],
+        translateY: [0, 80],
+        scale: [1, 1.18],
+        duration: 17000,
+        ease: 'inOutSine',
+        loop: true,
+        direction: 'alternate',
+      }),
+    ]
+    return () => anims.forEach((x) => x.cancel())
+  }, [sectionVisible, reduceMotion])
 
   return (
     <section
@@ -54,8 +90,14 @@ export function HeroSection({ site, stats }: HeroSectionProps) {
         className="pointer-events-none absolute inset-0"
         aria-hidden="true"
       >
-        <div className="absolute -top-40 right-[-12%] h-[36rem] w-[36rem] rounded-full bg-accent/15 blur-[130px]" />
-        <div className="absolute bottom-[-22%] left-[-10%] h-[32rem] w-[32rem] rounded-full bg-accent/10 blur-[130px]" />
+        <div
+          ref={blobARef}
+          className="absolute -top-40 right-[-12%] h-[36rem] w-[36rem] rounded-full bg-accent/15 blur-[130px] will-change-transform"
+        />
+        <div
+          ref={blobBRef}
+          className="absolute bottom-[-22%] left-[-10%] h-[32rem] w-[32rem] rounded-full bg-accent/10 blur-[130px] will-change-transform"
+        />
         <div className="absolute inset-0 opacity-40 [mask-image:radial-gradient(ellipse_75%_65%_at_50%_40%,black,transparent)] bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-[size:72px_72px]" />
       </motion.div>
 
@@ -115,28 +157,11 @@ export function HeroSection({ site, stats }: HeroSectionProps) {
           {site.hero.name}
         </motion.p>
 
-        <h1 className="mt-4 max-w-5xl font-display text-[clamp(2.6rem,7vw,6.5rem)] font-medium leading-[1.02] tracking-tight text-balance">
-          {words.map((word, i) => (
-            <span
-              key={i}
-              className="inline-block overflow-hidden pb-1 -mb-1 align-top"
-            >
-              <motion.span
-                className="inline-block"
-                initial={{ y: '115%' }}
-                animate={{ y: 0 }}
-                transition={{
-                  duration: 0.9,
-                  ease: EASE,
-                  delay: 0.3 + i * 0.07,
-                }}
-              >
-                {word}
-                {i < words.length - 1 ? '\u00A0' : ''}
-              </motion.span>
-            </span>
-          ))}
-        </h1>
+        {/* animejs per-character masked reveal */}
+        <AnimatedHeadline
+          text={site.hero.headline}
+          className="mt-4 max-w-5xl font-display text-[clamp(2.6rem,7vw,6.5rem)] font-medium leading-[1.02] tracking-tight text-balance"
+        />
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -153,19 +178,23 @@ export function HeroSection({ site, stats }: HeroSectionProps) {
           transition={{ duration: 0.7, ease: EASE, delay: 0.8 }}
           className="mt-10 flex flex-wrap items-center gap-4"
         >
-          <a
-            href="#work"
-            className={buttonVariants({ variant: 'primary', size: 'lg' })}
-          >
-            See the work
-            <ArrowUpRight className="h-4 w-4" />
-          </a>
-          <a
-            href="#contact"
-            className={buttonVariants({ variant: 'outline', size: 'lg' })}
-          >
-            Start a project
-          </a>
+          <Magnetic>
+            <a
+              href="#work"
+              className={buttonVariants({ variant: 'primary', size: 'lg' })}
+            >
+              See the work
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+          </Magnetic>
+          <Magnetic>
+            <a
+              href="#contact"
+              className={buttonVariants({ variant: 'outline', size: 'lg' })}
+            >
+              Start a project
+            </a>
+          </Magnetic>
         </motion.div>
       </motion.div>
 
@@ -178,6 +207,52 @@ export function HeroSection({ site, stats }: HeroSectionProps) {
         <ArrowDown className="h-5 w-5 text-muted-foreground" />
       </motion.div>
     </section>
+  )
+}
+
+/** Masked per-character reveal driven by animejs stagger + outExpo. */
+function AnimatedHeadline({ text, className }: { text: string; className?: string }) {
+  const ref = useRef<HTMLHeadingElement>(null)
+  const reduceMotion = useReducedMotion() ?? false
+  const words = text.split(' ')
+
+  useEffect(() => {
+    if (reduceMotion) return
+    const el = ref.current
+    if (!el) return
+    const chars = Array.from(el.querySelectorAll<HTMLElement>('.headline-char'))
+    if (!chars.length) return
+    const anim = animate(chars, {
+      translateY: ['115%', '0%'],
+      duration: 1200,
+      ease: 'outExpo',
+      delay: stagger(55, { start: 300 }),
+    })
+    return () => {
+      anim.cancel()
+    }
+  }, [text, reduceMotion])
+
+  return (
+    <h1 ref={ref} aria-label={text} className={className}>
+      {words.map((word, wi) => (
+        <span
+          key={wi}
+          className="inline-block overflow-hidden pb-1 -mb-1 align-top"
+        >
+          {Array.from(word).map((ch, ci) => (
+            <span
+              key={ci}
+              className="headline-char inline-block will-change-transform"
+              style={reduceMotion ? undefined : { transform: 'translateY(115%)' }}
+            >
+              {ch}
+            </span>
+          ))}
+          {wi < words.length - 1 ? '\u00A0' : ''}
+        </span>
+      ))}
+    </h1>
   )
 }
 
@@ -212,9 +287,10 @@ function FloatingStatCard({
         transition={{ duration: 0.7, ease: EASE, delay: 1 }}
         className="rounded-2xl border border-border bg-card/80 p-5 shadow-xl shadow-black/5 backdrop-blur"
       >
-        <div className="font-display text-3xl font-semibold text-accent">
-          {value}
-        </div>
+        <CountUp
+          value={value}
+          className="font-display text-3xl font-semibold text-accent"
+        />
         <div className="mt-1 text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
           {label}
         </div>

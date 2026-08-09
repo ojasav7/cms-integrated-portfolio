@@ -1,3 +1,5 @@
+import type { AsciiArtConfig } from '@/components/ascii-art/config'
+
 export interface HeroContent {
   eyebrow: string
   name: string
@@ -63,6 +65,15 @@ export interface MarqueeContent {
   bottom: string[]
 }
 
+export interface AsciiShowcaseContent {
+  enabled: boolean
+  eyebrow: string
+  title: string
+  description: string
+  image: string
+  config: AsciiArtConfig
+}
+
 export interface SiteConfig {
   hero: HeroContent
   about: AboutContent
@@ -70,6 +81,7 @@ export interface SiteConfig {
   contact: ContactContent
   footer: FooterContent
   marquee: MarqueeContent
+  asciiArt: AsciiShowcaseContent
 }
 
 export interface StatItem {

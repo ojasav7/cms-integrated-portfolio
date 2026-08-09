@@ -14,7 +14,10 @@ const THEME_SCRIPT = `try {
 } catch(e) { document.documentElement.classList.add("dark"); }`
 
 const FONT_HREF =
-  'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap'
+  'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap'
+
+const INSTRUMENT_SERIF_HREF =
+  'https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -47,6 +50,7 @@ export const Route = createRootRoute({
         crossOrigin: 'anonymous',
       },
       { rel: 'stylesheet', href: FONT_HREF },
+      { rel: 'stylesheet', href: INSTRUMENT_SERIF_HREF },
     ],
   }),
   shellComponent: RootDocument,

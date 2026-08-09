@@ -14,7 +14,15 @@ const LINKS = [
   { href: '#contact', label: 'Contact' },
 ]
 
-export function Navbar() {
+/** Featured project — embedded as a section on the homepage. */
+const MEASURED_HREF = '#measured'
+
+interface NavbarProps {
+  /** Slides the bar out while the fullscreen Measured section is on screen. */
+  hidden?: boolean
+}
+
+export function Navbar({ hidden = false }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const { scrollY } = useScroll()
@@ -30,6 +38,7 @@ export function Navbar() {
         scrolled
           ? 'border-b border-border bg-background/80 backdrop-blur-xl'
           : 'bg-transparent',
+        hidden && 'pointer-events-none -translate-y-full opacity-0',
       )}
     >
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 md:h-20 md:px-10">
@@ -51,6 +60,12 @@ export function Navbar() {
               {link.label}
             </a>
           ))}
+          <a
+            href={MEASURED_HREF}
+            className="rounded-full px-4 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Measured
+          </a>
         </div>
 
         <div className="flex items-center gap-2">
@@ -87,6 +102,13 @@ export function Navbar() {
                   {link.label}
                 </a>
               ))}
+              <a
+                href={MEASURED_HREF}
+                onClick={() => setOpen(false)}
+                className="rounded-xl px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-muted"
+              >
+                Measured
+              </a>
             </div>
           </motion.div>
         )}

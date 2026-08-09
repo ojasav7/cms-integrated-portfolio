@@ -17,6 +17,7 @@ import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as AdminMediaRouteImport } from './routes/admin/media'
 import { Route as AdminReelsRouteImport } from './routes/admin/reels'
 import { Route as AdminSiteRouteImport } from './routes/admin/site'
+import { Route as ProjectsMeasuredRouteImport } from './routes/projects/measured'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -58,6 +59,11 @@ const AdminSiteRoute = AdminSiteRouteImport.update({
   path: '/site',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const ProjectsMeasuredRoute = ProjectsMeasuredRouteImport.update({
+  id: '/projects/measured',
+  path: '/projects/measured',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -67,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/admin/media': typeof AdminMediaRoute
   '/admin/reels': typeof AdminReelsRoute
   '/admin/site': typeof AdminSiteRoute
+  '/projects/measured': typeof ProjectsMeasuredRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
@@ -76,6 +83,7 @@ export interface FileRoutesByTo {
   '/admin/media': typeof AdminMediaRoute
   '/admin/reels': typeof AdminReelsRoute
   '/admin/site': typeof AdminSiteRoute
+  '/projects/measured': typeof ProjectsMeasuredRoute
   '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
@@ -87,6 +95,7 @@ export interface FileRoutesById {
   '/admin/media': typeof AdminMediaRoute
   '/admin/reels': typeof AdminReelsRoute
   '/admin/site': typeof AdminSiteRoute
+  '/projects/measured': typeof ProjectsMeasuredRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -99,6 +108,7 @@ export interface FileRouteTypes {
     | '/admin/media'
     | '/admin/reels'
     | '/admin/site'
+    | '/projects/measured'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -108,6 +118,7 @@ export interface FileRouteTypes {
     | '/admin/media'
     | '/admin/reels'
     | '/admin/site'
+    | '/projects/measured'
     | '/admin'
   id:
     | '__root__'
@@ -118,12 +129,14 @@ export interface FileRouteTypes {
     | '/admin/media'
     | '/admin/reels'
     | '/admin/site'
+    | '/projects/measured'
     | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
+  ProjectsMeasuredRoute: typeof ProjectsMeasuredRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -184,6 +197,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSiteRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/projects/measured': {
+      id: '/projects/measured'
+      path: '/projects/measured'
+      fullPath: '/projects/measured'
+      preLoaderRoute: typeof ProjectsMeasuredRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -212,6 +232,7 @@ const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRouteRoute: AdminRouteRouteWithChildren,
+  ProjectsMeasuredRoute: ProjectsMeasuredRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

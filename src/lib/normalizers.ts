@@ -1,11 +1,14 @@
 import {
+  DEFAULT_ASCII_SHOWCASE,
   DEFAULT_CAPABILITIES,
   DEFAULT_HERO_SLIDES,
   DEFAULT_SITE,
   DEFAULT_STATS,
   DEFAULT_TESTIMONIALS,
 } from '@/lib/cms/defaults'
+import { DEFAULT_ASCII_CONFIG } from '@/components/ascii-art/config'
 import type {
+  AsciiShowcaseContent,
   CapabilityItem,
   CaseStudyItem,
   CollectionItem,
@@ -161,6 +164,46 @@ export function normalizeSite(
     marquee: {
       top: asStringArray(src.marquee?.top, base.marquee.top),
       bottom: asStringArray(src.marquee?.bottom, base.marquee.bottom),
+    },
+    asciiArt: normalizeAsciiShowcase(src.asciiArt),
+  }
+}
+
+/** Deep-merge the ASCII-art showcase with safe defaults. */
+export function normalizeAsciiShowcase(
+  value: Partial<AsciiShowcaseContent> | null | undefined,
+): AsciiShowcaseContent {
+  const base = DEFAULT_ASCII_SHOWCASE
+  const src = value ?? {}
+  return {
+    enabled: typeof src.enabled === 'boolean' ? src.enabled : base.enabled,
+    eyebrow: asString(src.eyebrow, base.eyebrow),
+    title: asString(src.title, base.title),
+    description: asString(src.description, base.description),
+    image: asString(src.image, base.image),
+    config: {
+      ...DEFAULT_ASCII_CONFIG,
+      ...(src.config ?? {}),
+      pfx: {
+        ...DEFAULT_ASCII_CONFIG.pfx,
+        ...(src.config?.pfx ?? {}),
+      },
+      animSpeed: {
+        ...DEFAULT_ASCII_CONFIG.animSpeed,
+        ...(src.config?.animSpeed ?? {}),
+      },
+      animIntensity: {
+        ...DEFAULT_ASCII_CONFIG.animIntensity,
+        ...(src.config?.animIntensity ?? {}),
+      },
+      lights: {
+        ...DEFAULT_ASCII_CONFIG.lights,
+        ...(src.config?.lights ?? {}),
+      },
+      mask: {
+        ...DEFAULT_ASCII_CONFIG.mask,
+        ...(src.config?.mask ?? {}),
+      },
     },
   }
 }

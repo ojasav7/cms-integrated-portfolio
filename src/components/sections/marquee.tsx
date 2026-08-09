@@ -19,7 +19,7 @@ export function MarqueeStrip({ words, reverse, className }: MarqueeStripProps) {
     >
       <div
         className={cn(
-          'flex w-max items-center gap-10 whitespace-nowrap',
+          'flex w-max items-center gap-10 whitespace-nowrap hover:[animation-play-state:paused]',
           reverse ? 'animate-marquee-rev' : 'animate-marquee',
         )}
       >

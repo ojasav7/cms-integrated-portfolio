@@ -96,14 +96,149 @@
   "footer": {
     "copyright": "© 2026 Ojasav Thakur",
     "socials": [
-      { "label": "Instagram", "url": "https://instagram.com" },
-      { "label": "Behance", "url": "https://behance.net" },
-      { "label": "LinkedIn", "url": "https://linkedin.com" },
-      { "label": "X", "url": "https://x.com" }
+      {
+        "label": "Instagram",
+        "url": "https://instagram.com"
+      },
+      {
+        "label": "Behance",
+        "url": "https://behance.net"
+      },
+      {
+        "label": "LinkedIn",
+        "url": "https://linkedin.com"
+      },
+      {
+        "label": "X",
+        "url": "https://x.com"
+      }
     ]
   },
   "marquee": {
-    "top": ["Branding", "Film", "Web", "Motion", "Strategy"],
-    "bottom": ["Identity", "Art Direction", "Development", "Reels", "Systems"]
+    "top": [
+      "Branding",
+      "Film",
+      "Web",
+      "Motion",
+      "Strategy"
+    ],
+    "bottom": [
+      "Identity",
+      "Art Direction",
+      "Development",
+      "Reels",
+      "Systems"
+    ]
+  },
+  "asciiArt": {
+    "enabled": true,
+    "eyebrow": "Experiments",
+    "title": "ASCII art renderer",
+    "description": "A Canvas2D portrait renderer with 24 render modes, tone mapping, post effects and animation — the whole pipeline runs client-side.",
+    "image": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1600&auto=format&fit=crop",
+    "config": {
+      "renderMode": "characters",
+      "bgMode": "blur",
+      "bgBlur": 0,
+      "bgOpacity": 92,
+      "cellSize": 13,
+      "coverage": 100,
+      "invert": false,
+      "styleBlend": "source-over",
+      "charSet": "standard",
+      "customChars": "",
+      "brightness": 0,
+      "contrast": 115,
+      "edgeEmphasis": 0,
+      "density": 0,
+      "toneCurve": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 1
+        }
+      ],
+      "tint": "#d8b46a",
+      "tintOpacity": 38,
+      "overlayBlend": "soft-light",
+      "saturation": 100,
+      "grayscale": 28,
+      "blurType": "off",
+      "blurAmount": 35,
+      "blurAngle": 0,
+      "directionalBothSides": false,
+      "tiltFocus": 35,
+      "tiltPosition": 50,
+      "tiltFeather": 15,
+      "lensFocus": 40,
+      "blurCenterX": 50,
+      "blurCenterY": 50,
+      "progressivePosition": 55,
+      "progressiveReverse": false,
+      "pfx": {
+        "vignette": {
+          "enabled": true,
+          "intensity": 55
+        },
+        "scanLines": {
+          "enabled": false,
+          "intensity": 40
+        },
+        "chromatic": {
+          "enabled": false,
+          "intensity": 15
+        },
+        "bloom": {
+          "enabled": true,
+          "intensity": 45
+        },
+        "filmGrain": {
+          "enabled": false,
+          "intensity": 30
+        },
+        "glitch": {
+          "enabled": false,
+          "intensity": 20
+        },
+        "pixelate": {
+          "enabled": false,
+          "intensity": 15
+        },
+        "halftone": {
+          "enabled": false,
+          "intensity": 20
+        },
+        "filmDust": {
+          "enabled": false,
+          "intensity": 20
+        }
+      },
+      "animated": true,
+      "animStyle": "ripple",
+      "animSpeed": {
+        "enabled": true,
+        "intensity": 100
+      },
+      "animIntensity": {
+        "enabled": true,
+        "intensity": 60
+      },
+      "lights": {
+        "enabled": false,
+        "points": []
+      },
+      "mask": {
+        "enabled": false,
+        "tool": "freehand",
+        "brushSize": 30,
+        "showOverlay": false,
+        "invert": false,
+        "dataUrl": null,
+        "shapes": []
+      }
+    }
   }
 }

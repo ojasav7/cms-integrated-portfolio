@@ -1,6 +1,7 @@
 import { ArrowUp, Lock } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 import type { SiteConfig } from '@/lib/cms/types'
+import { Magnetic } from '@/components/ui/magnetic'
 
 export function Footer({ site }: { site: SiteConfig }) {
   return (
@@ -29,13 +30,15 @@ export function Footer({ site }: { site: SiteConfig }) {
           </Link>
         </div>
 
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          aria-label="Back to top"
-          className="group inline-flex h-10 w-10 items-center justify-center self-start rounded-full border border-border transition-all hover:border-accent hover:text-accent md:self-auto"
-        >
-          <ArrowUp className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
-        </button>
+        <Magnetic strength={0.5} className="self-start md:self-auto">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            aria-label="Back to top"
+            className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-border transition-all hover:border-accent hover:text-accent"
+          >
+            <ArrowUp className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
+          </button>
+        </Magnetic>
       </div>
     </footer>
   )

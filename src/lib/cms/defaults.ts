@@ -1,6 +1,8 @@
 import siteJson from '@/server/storage/site.json'
 import testimonialsJson from '@/server/storage/testimonials.json'
+import { DEFAULT_ASCII_CONFIG } from '@/components/ascii-art/config'
 import type {
+  AsciiShowcaseContent,
   CapabilityItem,
   HeroSlideItem,
   SiteConfig,
@@ -9,6 +11,18 @@ import type {
 } from './types'
 
 export const DEFAULT_SITE = siteJson as SiteConfig
+
+export const DEFAULT_ASCII_SHOWCASE: AsciiShowcaseContent = {
+  enabled: true,
+  eyebrow: 'Experiments',
+  title: 'ASCII art renderer',
+  description:
+    'A Canvas2D portrait renderer with 24 render modes, tone mapping, post effects and animation — the whole pipeline runs client-side.',
+  // A portrait with a clear subject demos the effect best — any photo works.
+  image:
+    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1600&auto=format&fit=crop',
+  config: DEFAULT_ASCII_CONFIG,
+}
 
 export const DEFAULT_STATS: StatItem[] = [
   { value: '120+', label: 'Projects shipped' },

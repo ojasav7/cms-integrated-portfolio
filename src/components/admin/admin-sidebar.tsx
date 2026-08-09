@@ -4,6 +4,7 @@ import {
   Clapperboard,
   ExternalLink,
   Image as ImageIcon,
+  LayoutDashboard,
   LayoutTemplate,
   Layers,
   LogOut,
@@ -12,6 +13,7 @@ import { cn } from '@/lib/utils'
 import { logout } from '@/lib/admin/auth.functions'
 
 const NAV = [
+  { to: '/admin', label: 'Dashboard', icon: LayoutDashboard },
   { to: '/admin/site', label: 'Site', icon: LayoutTemplate },
   { to: '/admin/reels', label: 'Reels', icon: Clapperboard },
   { to: '/admin/content', label: 'Content', icon: Layers },

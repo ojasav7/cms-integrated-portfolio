@@ -100,3 +100,80 @@
     display: none;
   }
 }
+
+/* ---------------------------------------------------------------- */
+/* Measured — portfolio project experience                            */
+/* ---------------------------------------------------------------- */
+
+@theme {
+  --breakpoint-xs: 480px;
+}
+
+/* Inter is the base font inside the Measured experience. Scoped so the rest
+   of the site keeps its own typography (Space Grotesk display, etc.).
+   NOTE: un-layered rules like this beat Tailwind `font-*` utilities on equal
+   specificity — keep any measured-internal font overrides as custom classes
+   (e.g. .measured-title) rather than utilities. */
+.measured-experience,
+.measured-experience * {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Self-hosted Helvetica Neue Roman — drop the file into /public/fonts/ */
+@font-face {
+  font-family: 'Helvetica Neue Roman';
+  src: url('/fonts/HelveticaNeue-Roman.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* The immersive Measured wrapper renders in Helvetica Neue Roman.
+   Declared after the Inter scoping so it wins on equal specificity. */
+.font-helvetica-neue,
+.font-helvetica-neue * {
+  font-family: 'Helvetica Neue Roman', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* Instrument Serif for the giant "Measured" title.
+   Scoped under the wrapper so it beats the rules above regardless of order. */
+.font-helvetica-neue .measured-title {
+  font-family: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+}
+
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.01);
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: none;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.liquid-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.15) 20%,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0.15) 80%,
+    rgba(255, 255, 255, 0.45) 100%
+  );
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  pointer-events: none;
+}

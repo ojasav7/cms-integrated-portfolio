@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { fadeUp, stagger, viewport } from '@/lib/motion'
+import { ScrambleText } from '@/components/ui/scramble-text'
 
 interface SectionHeadingProps {
   eyebrow?: string
@@ -37,12 +38,9 @@ export function SectionHeading({
           {eyebrow}
         </motion.p>
       ) : null}
-      <motion.h2
-        variants={fadeUp}
-        className="font-display text-4xl font-medium tracking-tight text-balance md:text-5xl"
-      >
-        {title}
-      </motion.h2>
+      <h2 className="font-display text-4xl font-medium tracking-tight text-balance md:text-5xl">
+        <ScrambleText text={title} />
+      </h2>
       {description ? (
         <motion.p
           variants={fadeUp}
