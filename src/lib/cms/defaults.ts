@@ -19,8 +19,7 @@ export const DEFAULT_ASCII_SHOWCASE: AsciiShowcaseContent = {
   description:
     'A Canvas2D portrait renderer with 24 render modes, tone mapping, post effects and animation — the whole pipeline runs client-side.',
   // A portrait with a clear subject demos the effect best — any photo works.
-  image:
-    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1600&auto=format&fit=crop',
+  image: '/lady.png',
   config: DEFAULT_ASCII_CONFIG,
 }
 

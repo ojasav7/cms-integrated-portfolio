@@ -135,7 +135,7 @@
     "eyebrow": "Experiments",
     "title": "ASCII art renderer",
     "description": "A Canvas2D portrait renderer with 24 render modes, tone mapping, post effects and animation — the whole pipeline runs client-side.",
-    "image": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1600&auto=format&fit=crop",
+    "image": "/lady.png",
     "config": {
       "renderMode": "characters",
       "bgMode": "blur",

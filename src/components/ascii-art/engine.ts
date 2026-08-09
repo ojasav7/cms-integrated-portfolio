@@ -72,6 +72,34 @@ function hash2(x: number, y: number) {
   return ((h ^ (h >> 16)) >>> 0) / 4294967295
 }
 
+/**
+ * Source rect that cover-fits an image into a w×h frame: scale to fill the
+ * whole frame and crop the overflow (no distortion).
+ */
+function coverRect(
+  imgW: number,
+  imgH: number,
+  w: number,
+  h: number,
+): { sx: number; sy: number; sw: number; sh: number } {
+  const imgAspect = imgW / imgH
+  const frameAspect = w / h
+  let sx = 0
+  let sy = 0
+  let sw = imgW
+  let sh = imgH
+  if (imgAspect > frameAspect) {
+    // Image is wider than the frame — crop left/right.
+    sw = imgH * frameAspect
+    sx = (imgW - sw) / 2
+  } else {
+    // Image is taller than the frame — crop top/bottom.
+    sh = imgW / frameAspect
+    sy = (imgH - sh) / 2
+  }
+  return { sx, sy, sw, sh }
+}
+
 /** Sample the image into a grid of cells (one average color per cell). */
 function sampleCells(
   img: HTMLImageElement,
@@ -85,7 +113,8 @@ function sampleCells(
   off.width = cols
   off.height = rows
   const octx = off.getContext('2d', { willReadFrequently: true })!
-  octx.drawImage(img, 0, 0, cols, rows)
+  const { sx, sy, sw, sh } = coverRect(img.naturalWidth, img.naturalHeight, width, height)
+  octx.drawImage(img, sx, sy, sw, sh, 0, 0, cols, rows)
   const data = octx.getImageData(0, 0, cols, rows).data
 
   const cells: Cell[] = []
@@ -147,12 +176,13 @@ function drawBackground(
   if (mode === 'none' || mode === 'transparent') return
   ctx.save()
   ctx.globalAlpha = clamp(config.bgOpacity / 100)
+  const { sx, sy, sw, sh } = coverRect(img.naturalWidth, img.naturalHeight, w, h)
   if (mode === 'blur') {
     ctx.filter = `blur(${config.bgBlur}px)`
-    ctx.drawImage(img, 0, 0, w, h)
+    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, w, h)
     ctx.filter = 'none'
   } else if (mode === 'original') {
-    ctx.drawImage(img, 0, 0, w, h)
+    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, w, h)
   } else if (mode === 'solid') {
     ctx.fillStyle = config.tint || '#000'
     ctx.fillRect(0, 0, w, h)

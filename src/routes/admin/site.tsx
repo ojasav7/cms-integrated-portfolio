@@ -480,7 +480,7 @@ function AsciiForm({
           </Button>
         </div>
         <div className="p-5">
-          <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-border bg-black/80">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-border bg-black/80">
             {draft.image ? (
               <AsciiArt
                 src={draft.image}

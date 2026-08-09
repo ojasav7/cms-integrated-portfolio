@@ -27,8 +27,8 @@ export function AsciiShowcaseSection({ content }: AsciiShowcaseSectionProps) {
           description={content.description}
         />
       </div>
-      <div className="mx-auto mt-12 max-w-5xl px-6 md:px-10">
-        <div className="relative aspect-[16/10] overflow-hidden rounded-3xl border border-border bg-card shadow-2xl shadow-black/20">
+      <div className="mx-auto mt-12 max-w-3xl px-6 md:px-10">
+        <div className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-border bg-card shadow-2xl shadow-black/20">
           <AsciiArt
             src={content.image}
             config={content.config}
