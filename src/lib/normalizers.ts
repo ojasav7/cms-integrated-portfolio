@@ -89,11 +89,24 @@ export function normalizeHeroSlides(
   })
 }
 
+/** The site's default work items double as the case-study fallback (same shape). */
+const FALLBACK_CASE_STUDIES: CaseStudyItem[] = Object.values(
+  DEFAULT_SITE.portfolio.sections,
+).flatMap((section) => section.items ?? [])
+
 export function normalizeCaseStudies(
   items: CollectionItem[],
 ): CaseStudyItem[] {
-  if (!Array.isArray(items)) return []
-  return items
+  // Fall back to the default work items, matching the other collections — a
+  // fresh database must not silently empty a section the site promises.
+  const source = Array.isArray(items) && items.length ? items : FALLBACK_CASE_STUDIES
+  return source
+    // Filter on the RAW values, before defaulting: otherwise every blank admin
+    // entry survives as a card titled "Untitled" with no image.
+    .filter((item) => {
+      const i = asRecord(item)
+      return Boolean(asString(i.title) || asString(i.image))
+    })
     .map((item) => {
       const i = asRecord(item)
       return {
@@ -104,7 +117,6 @@ export function normalizeCaseStudies(
         url: asString(i.url),
       }
     })
-    .filter((item) => item.title || item.image)
 }
 
 export function normalizeReels(reels: unknown[]): NormalizedReel[] {

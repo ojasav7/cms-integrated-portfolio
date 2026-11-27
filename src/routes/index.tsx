@@ -5,6 +5,7 @@ import { getPortfolioContent } from '@/lib/cms/public.functions'
 import {
   buildGalleryAssets,
   normalizeCapabilities,
+  normalizeCaseStudies,
   normalizeHeroSlides,
   normalizeReels,
   normalizeSite,
@@ -18,6 +19,7 @@ import { AboutSection } from '@/components/sections/about'
 import { HeroCarouselSection } from '@/components/sections/hero-carousel'
 import { ReelsSection } from '@/components/sections/reels'
 import { ImageGallerySection } from '@/components/sections/image-gallery'
+import { CaseStudiesSection } from '@/components/sections/case-studies'
 import { TestimonialsSection } from '@/components/sections/testimonials'
 import { AsciiShowcaseSection } from '@/components/sections/ascii-showcase'
 import { MeasuredSection } from '@/components/sections/measured-section'
@@ -40,6 +42,7 @@ function HomePage() {
   const heroSlides = normalizeHeroSlides(collections.heroShowcase ?? [])
   const reelItems = normalizeReels(data.reels ?? [])
   const galleryAssets = buildGalleryAssets(collections, site)
+  const caseStudies = normalizeCaseStudies(collections.caseStudies ?? [])
 
   // Hide the site navbar while the fullscreen Measured section is on screen,
   // so its own liquid-glass navigation sits exactly where the design intends.
@@ -57,6 +60,7 @@ function HomePage() {
       <MarqueeStrip words={site.marquee.bottom} reverse className="bg-card/40" />
       <ReelsSection reels={reelItems} />
       <ImageGallerySection assets={galleryAssets} />
+      <CaseStudiesSection items={caseStudies} />
       <AsciiShowcaseSection content={site.asciiArt} />
       <TestimonialsSection items={testimonials} />
       <ContactSection site={site} />

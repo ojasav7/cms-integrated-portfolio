@@ -3,6 +3,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { Check, Copy, ImagePlus, UploadCloud } from 'lucide-react'
 import { uploadMedia } from '@/lib/admin/media.functions'
+import { pickDroppedFile } from '@/lib/upload'
 import { useAdminStatus } from './route'
 import { Banner, Card, PageHeader } from '@/components/admin/ui'
 import { Button } from '@/components/ui/button'
@@ -23,6 +24,7 @@ function MediaPage() {
   const [fileName, setFileName] = useState('')
   const [busy, setBusy] = useState(false)
   const [result, setResult] = useState<UploadResult | null>(null)
+  const [dragging, setDragging] = useState(false)
   const [copied, setCopied] = useState(false)
 
   const onFile = (file: File | null) => {
@@ -73,7 +75,21 @@ function MediaPage() {
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
-          className="grid min-h-56 place-items-center rounded-2xl border-2 border-dashed border-border bg-muted/40 p-8 text-center transition-colors hover:border-accent"
+          onDragOver={(e) => {
+            e.preventDefault()
+            setDragging(true)
+          }}
+          onDragLeave={() => setDragging(false)}
+          onDrop={(e) => {
+            e.preventDefault()
+            setDragging(false)
+            onFile(pickDroppedFile(e.dataTransfer?.files))
+          }}
+          className={`grid min-h-56 place-items-center rounded-2xl border-2 border-dashed p-8 text-center transition-colors ${
+            dragging
+              ? 'border-accent bg-accent/10'
+              : 'border-border bg-muted/40 hover:border-accent'
+          }`}
         >
           {preview ? (
             <img
@@ -85,7 +101,7 @@ function MediaPage() {
             <div className="flex flex-col items-center gap-3 text-muted-foreground">
               <ImagePlus className="h-10 w-10" />
               <p className="text-sm font-medium">
-                Click to choose an image
+                Click or drop an image here
               </p>
               <p className="text-xs">PNG, JPG, GIF, WebP or video</p>
             </div>

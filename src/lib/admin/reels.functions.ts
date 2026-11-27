@@ -4,21 +4,11 @@ import { requireAdmin } from './auth.server'
 import type { ReelItem } from '@/lib/cms/types'
 import fallbackReels from '@/server/storage/reels.json'
 
-/** Convert a YouTube / Vimeo URL into an embeddable iframe URL. */
-export function computeEmbedUrl(input: string): string {
-  const url = input.trim()
-  if (!url) return ''
+// Pure URL derivation lives in @/lib/embed so it can be unit-tested; re-exported
+// here to keep the existing import surface.
+import { computeEmbedUrl } from '@/lib/embed'
 
-  const youtube = url.match(
-    /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{6,})/,
-  )
-  if (youtube) return `https://www.youtube-nocookie.com/embed/${youtube[1]}`
-
-  const vimeo = url.match(/vimeo\.com\/(?:video\/)?(\d+)/)
-  if (vimeo) return `https://player.vimeo.com/video/${vimeo[1]}`
-
-  return ''
-}
+export { computeEmbedUrl }
 
 export const getReels = createServerFn({ method: 'GET' }).handler(async () => {
   const prisma = getPrisma()

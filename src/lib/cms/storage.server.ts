@@ -20,9 +20,10 @@ export async function getSiteData(): Promise<SiteConfig> {
   }
 }
 
-export async function updateSiteData(data: SiteConfig) {
+/** Persist the site config. Returns false when there is no database to write to. */
+export async function updateSiteData(data: SiteConfig): Promise<boolean> {
   const prisma = getPrisma()
-  if (!prisma) return
+  if (!prisma) return false
   await prisma.siteConfig.upsert({
     where: { key: SITE_KEY },
     create: {
@@ -31,4 +32,25 @@ export async function updateSiteData(data: SiteConfig) {
     },
     update: { data: data as unknown as Prisma.InputJsonValue },
   })
+  return true
+}
+
+export interface SiteSaveResult {
+  ok: boolean
+  error: string
+}
+
+/**
+ * The single mapping from "was it written?" to "what does the editor see?".
+ * Pure and separate on purpose: tests pin that no path can report success for a
+ * write that did not happen (the zero-DB mode is read-only).
+ */
+export function siteSaveResult(saved: boolean): SiteSaveResult {
+  return saved
+    ? { ok: true, error: '' }
+    : {
+        ok: false,
+        error:
+          'Database not configured — nothing was saved. Set DATABASE_URL (and start MongoDB) to edit content.',
+      }
 }

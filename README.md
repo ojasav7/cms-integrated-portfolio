@@ -25,7 +25,7 @@
 <br/>
 
 > **A full-stack CMS-driven portfolio** built for independent studios & creatives who refuse to be boring.  
-> One codebase. Two surfaces. Infinite content — no redeploys needed.
+> One codebase. Two surfaces. Editable content — no redeploys needed (with a database).
 
 </div>
 
@@ -38,11 +38,11 @@ A **production-ready agency portfolio** with a stunning public-facing site and a
 ```
 public site ──────────────────────────────────────── /admin ───────────────────
   │                                                     │
-  ├── Hero (animated ASCII art + scramble text)         ├── Login (session auth)
+  ├── Hero (anime.js reveal · magnetic CTAs)             ├── Login (HMAC cookie)
   ├── Marquee (infinite scroll ticker)                  ├── Dashboard
   ├── About (strategy · design · motion)                ├── Site Content editor
-  ├── Hero Carousel (Embla/Swiper)                      ├── Collections manager
-  ├── Portfolio Sections (branding · web · film)        ├── Media uploads (Cloudinary)
+  ├── Hero Carousel (Embla)                             ├── Collections manager
+  ├── Case Studies (editable cards)                     ├── Media uploads (Cloudinary)
   ├── Reels (video embeds)                              └── Reels manager
   ├── Image Gallery
   ├── Testimonials
@@ -64,7 +64,7 @@ public site ──────────────────────�
 | **Database** | MongoDB via Prisma 6 |
 | **Media** | Cloudinary SDK |
 | **Forms** | React Hook Form + Zod |
-| **Auth** | Single-password session cookie (no OAuth complexity) |
+| **Auth** | Single password + HMAC-signed session cookie |
 | **Server** | Nitro (Vercel adapter) |
 | **Runtime** | Bun (Node 20+ fallback) |
 
@@ -89,7 +89,7 @@ src/
 ├── routes/
 │   ├── index.tsx           ← public portfolio page
 │   ├── admin/              ← protected admin panel (login, content, media, reels, site)
-│   └── projects/           ← project detail pages
+│   └── projects/           ← fullscreen “measured” page (measured.tsx)
 │
 └── server/storage/         ← JSON fallbacks (site runs with ZERO DB config)
     ├── site.json
@@ -97,7 +97,7 @@ src/
     └── testimonials.json
 ```
 
-> **Zero-DB mode:** if `DATABASE_URL` is unset, the site serves from static JSON fallbacks automatically. Perfect for local dev or static deploys.
+> **Zero-DB mode:** if `DATABASE_URL` is unset the site serves from static JSON fallbacks and the admin panel is **read-only** — save actions report that nothing was persisted instead of claiming success. Perfect for local dev and demos; set a database to edit content.
 
 ---
 
@@ -105,10 +105,11 @@ src/
 
 **Public Site**
 - 🎨 Custom ASCII art engine with configurable rendering
-- ✦ Text scramble effect on hero name
+- ✦ Text scramble on section headings + contact headline (anime.js per-character hero reveal)
 - 🎬 Video reels section with embeds + poster images  
-- 🖼️ Masonry image gallery
-- 💬 Testimonials carousel
+- 🖼️ Image gallery — portrait + banner rails, sized by true aspect ratio
+- 🗂️ Case-studies section rendered from the `caseStudies` collection
+- 💬 Testimonials grid with 3D tilt
 - 📡 Infinite marquee ticker (top + bottom)
 - 🧲 Magnetic button hover effect
 - 🔢 Count-up stat animations
@@ -116,12 +117,12 @@ src/
 - 📱 Fully responsive, mobile-first
 
 **Admin Panel**
-- 🔒 Single-password auth with signed session cookie
+- 🔒 Single-password auth; the session cookie carries an HMAC-derived token, never the secret
 - ✏️ Visual site content editor (hero, about, contact, footer, marquee)
 - 📦 Collections manager (capabilities, testimonials, hero slides, case studies, stats)
-- 📸 Cloudinary media library with drag-and-drop upload
+- 📸 Cloudinary upload (click or drag-and-drop) with a copyable CDN URL
 - 🎥 Reels CRUD (add / edit / reorder video embeds)
-- 🔄 Live preview of changes
+- 🛡️ Zero-DB save guard — no false “saved” toasts when nothing was written
 
 ---
 
@@ -203,7 +204,9 @@ Visit [`http://localhost:3000/admin`](http://localhost:3000/admin) to log into t
 bun run build
 ```
 
-Then push to GitHub and connect to Vercel. Set all env vars in the Vercel dashboard. The Nitro Vercel adapter handles the rest.
+Then push to GitHub and connect to Vercel. Set all env vars in the Vercel dashboard.
+
+> **Not verified in this repo:** there is no `vercel.json` and no deployment was performed from here. `npm run build` passing proves the Nitro build; the steps above are instructions, not a tested pipeline.
 
 ### Environment Variables (Vercel Dashboard)
 
@@ -220,7 +223,7 @@ Then push to GitHub and connect to Vercel. Set all env vars in the Vercel dashbo
 
 ## ◈ CONTENT MANAGEMENT
 
-Every piece of copy on the site is editable through the admin panel at `/admin`:
+With `DATABASE_URL` set, every piece of copy on the site is editable through the admin panel at `/admin` (without a database the panel opens but is read-only and says so):
 
 **Site Settings** (`/admin/site`) — edit hero, about, portfolio overview, contact info, footer links, marquee text, ASCII art showcase
 
@@ -231,7 +234,7 @@ Every piece of copy on the site is editable through the admin panel at `/admin`:
 - `caseStudies` — portfolio case study cards
 - `stats` — animated count-up numbers
 
-**Media** (`/admin/media`) — upload images/videos to Cloudinary, browse your library
+**Media** (`/admin/media`) — upload images/videos to Cloudinary and copy the returned URL (uploads only; there is no library browser yet)
 
 **Reels** (`/admin/reels`) — add video reels with embed URLs, posters, tags, and descriptions
 
@@ -286,3 +289,44 @@ MIT — use it, fork it, make it yours.
 *Bold digital experiences for ambitious teams.*
 
 </div>
+
+---
+
+## ◈ VERIFICATION
+
+```bash
+npm run typecheck          # tsc --noEmit
+npm run build              # Nitro production build
+bun test                   # unit tests (session, normalizers, embed, storage, upload)
+```
+
+**Admin session security (2026-11-27).** The `admin_session` cookie no longer
+contains `SESSION_SECRET`. It carries a derived token —
+`HMAC-SHA256(SESSION_SECRET, "admin-session:v1")` — compared in constant time,
+so a leaked cookie reveals nothing usable and cannot be replayed against another
+deployment. Login now **fails closed**: if `ADMIN_PASSWORD` or `SESSION_SECRET`
+is missing, nobody can sign in (previously an empty secret plus an empty cookie
+value compared equal and granted access), and the password comparison is
+constant-time. Existing sessions are invalidated by this change — sign in again.
+
+**Tests (`bun test`, 36 passing across 5 files, no network, no extra dependencies):**
+
+| File | Tests | Covers |
+|---|---|---|
+| `src/lib/admin/session.test.ts` | 10 | token derivation, constant-time compare, fail-closed login, cookie rejection |
+| `src/lib/normalizers.test.ts` | 10 | case-study fallback + blank filtering, gallery de-dupe, reel defaults, site merge |
+| `src/lib/embed.test.ts` | 5 | YouTube (watch / short / shorts / live) and Vimeo → embed URLs, unsupported input |
+| `src/lib/cms/storage.test.ts` | 9 | admin save → public read-back (the exact `updateSiteData` + `siteSaveResult` + `getSiteData` calls); zero-DB save returns `false` and writes nothing; `siteSaveResult` refuses a false success; with a database, exactly one upsert on key `main`; a failing write rejects; read falls back to `site.json` |
+| `src/lib/upload.test.ts` | 2 | `pickDroppedFile` picks the first dropped file and returns `null` for an empty/no-file drop |
+
+**Content paths fixed in this pass:** blank `caseStudies` rows are dropped instead of
+rendering "Untitled" cards; the `caseStudies` collection now has a public reader
+(`src/components/sections/case-studies.tsx`) — before, the admin could edit it and no
+section displayed it; `updateSiteData` returns a boolean so a save without a database
+reports failure instead of toasting “saved”; the media page accepts drag-and-drop (its
+pure `pickDroppedFile` helper is tested; the `onDrop` JSX wiring is read-verified, since
+this project has no DOM test environment by design).
+
+**Not verified here:** MongoDB CRUD against a live database, Cloudinary uploads
+(need credentials), any deployment, and any browser-level interaction — the dev server
+was built, not clicked through. Everything else listed above was executed.
